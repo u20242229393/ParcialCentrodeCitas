@@ -1,0 +1,191 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-title>
+      <ion-icon name="medkit-outline" style="vertical-align: middle; margin-right: 8px;"></ion-icon>
+      USCO • Centro de Citas Médicas
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding background-page">
+
+  <!-- Dashboard Métricas -->
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col size="6">
+        <ion-card class="metric-card">
+          <ion-card-content class="metric-content">
+            <div class="metric-icon primary-bg">
+              <ion-icon name="person-outline"></ion-icon>
+            </div>
+            <div class="metric-info">
+              <h2>{{ totalEspecialistas }}</h2>
+              <p>Médicos</p>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="6">
+        <ion-card class="metric-card">
+          <ion-card-content class="metric-content">
+            <div class="metric-icon success-bg">
+              <ion-icon name="calendar-outline"></ion-icon>
+            </div>
+            <div class="metric-info">
+              <h2>{{ totalDisponibles }}</h2>
+              <p>Disponibles</p>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Filtros ion-select -->
+  <ion-card class="filter-card ion-margin-top">
+    <ion-card-header>
+      <ion-card-title class="filter-title">
+        <ion-icon name="funnel-outline"></ion-icon>
+        Filtrar por Ciudad y EPS
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+          <ion-col size="12" size-md="5">
+            <ion-item lines="none" class="custom-input-item">
+              <ion-icon name="location-outline" slot="start" color="medium"></ion-icon>
+              <ion-select 
+                label="Ciudad" 
+                labelPlacement="floating" 
+                [(ngModel)]="ciudadFiltro" 
+                (ionChange)="filtrarYOrdenar()">
+                <ion-select-option value="">Todas las ciudades</ion-select-option>
+                <ion-select-option *ngFor="let c of ciudades" [value]="c">{{ c }}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="12" size-md="5">
+            <ion-item lines="none" class="custom-input-item">
+              <ion-icon name="business-outline" slot="start" color="medium"></ion-icon>
+              <ion-select 
+                label="EPS / Entidad" 
+                labelPlacement="floating" 
+                [(ngModel)]="companiaFiltro" 
+                (ionChange)="filtrarYOrdenar()">
+                <ion-select-option value="">Todas las EPS</ion-select-option>
+                <ion-select-option *ngFor="let comp of companias" [value]="comp">{{ comp }}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="12" size-md="2" class="ion-align-self-center">
+            <ion-button expand="block" fill="clear" color="medium" (click)="limpiar()">
+              <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Lista de Médicos Especialistas -->
+  <div class="list-container ion-margin-top">
+    <p class="section-subtitle">
+      Listado ordenado alfabéticamente por apellido (A - Z)
+    </p>
+
+    <ion-list class="ion-no-padding custom-list">
+      <ion-item 
+        *ngFor="let item of listaFiltrada" 
+        button 
+        detail="true" 
+        class="doctor-item ion-margin-bottom"
+        (click)="abrirModal(item)">
+        
+        <div class="doctor-avatar" slot="start">
+          <ion-icon name="person-outline"></ion-icon>
+        </div>
+
+        <ion-label>
+          <h2 class="doctor-name"><strong>{{ item.apellido }}</strong>, {{ item.nombreCompleto }}</h2>
+          <p class="doctor-spec">
+            <ion-icon name="medkit-outline"></ion-icon> {{ item.especialidad }}
+          </p>
+          <p class="doctor-location">
+            <ion-icon name="location-outline"></ion-icon> {{ item.ciudad }} • {{ item.compania }}
+          </p>
+        </ion-label>
+
+        <ion-badge slot="end" [color]="item.disponible ? 'success' : 'danger'" class="custom-badge">
+          {{ item.disponible ? 'Disponible' : 'Sin agenda' }}
+        </ion-badge>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- Requisito Funcional: ion-modal con datos del registro y botón de acción -->
+  <ion-modal [isOpen]="modalAbierto" (didDismiss)="setModal(false)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Detalle del Especialista</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setModal(false)">
+              <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding" *ngIf="seleccionado">
+        <ion-card class="modal-doctor-card">
+          <ion-card-header>
+            <ion-card-title>Dr(a). {{ seleccionado.nombreCompleto }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p><ion-icon name="medkit-outline"></ion-icon> <strong>Especialidad:</strong> {{ seleccionado.especialidad }}</p>
+            <p><ion-icon name="business-outline"></ion-icon> <strong>EPS / Entidad:</strong> {{ seleccionado.compania }}</p>
+            <p><ion-icon name="location-outline"></ion-icon> <strong>Sede:</strong> {{ seleccionado.ciudad }}</p>
+          </ion-card-content>
+        </ion-card>
+
+        <div class="form-section ion-margin-top">
+          <ion-item class="custom-input-item ion-margin-bottom">
+            <ion-icon name="calendar-outline" slot="start" color="primary"></ion-icon>
+            <ion-input 
+              type="date" 
+              label="Fecha de la cita *" 
+              labelPlacement="floating" 
+              [(ngModel)]="fechaCita">
+            </ion-input>
+          </ion-item>
+
+          <ion-item class="custom-input-item ion-margin-bottom">
+            <ion-icon name="time-outline" slot="start" color="primary"></ion-icon>
+            <ion-input 
+              type="time" 
+              label="Hora de la cita *" 
+              labelPlacement="floating" 
+              [(ngModel)]="horaCita">
+            </ion-input>
+          </ion-item>
+        </div>
+
+        <ion-button 
+          expand="block" 
+          color="primary" 
+          size="large"
+          class="ion-margin-top" 
+          (click)="ejecutarAccionReserva()">
+          <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+          Agendar Cita
+        </ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>

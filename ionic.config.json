@@ -1,0 +1,7 @@
+{
+  "name": "usco-citas-medicas",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

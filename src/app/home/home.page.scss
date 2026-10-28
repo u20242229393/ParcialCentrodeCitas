@@ -1,0 +1,204 @@
+.background-page {
+  --background: var(--ion-background-color, #f4f5f8);
+}
+
+.metric-card {
+  margin: 4px;
+  border-radius: 12px;
+  background: var(--ion-card-background, #ffffff);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  .metric-content {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+
+    .metric-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+
+      ion-icon {
+        font-size: 24px;
+      }
+
+      &.primary-bg {
+        background: #e3f2fd;
+        color: var(--ion-color-primary);
+      }
+
+      &.success-bg {
+        background: #e8f5e9;
+        color: var(--ion-color-success);
+      }
+    }
+
+    .metric-info {
+      h2 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.4rem;
+        color: var(--ion-text-color, #1e1e1e);
+      }
+      p {
+        margin: 2px 0 0 0;
+        font-size: 0.75rem;
+        color: var(--ion-color-step-600, #666666);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+}
+
+.filter-card {
+  border-radius: 12px;
+  margin: 8px 4px;
+  background: var(--ion-card-background, #ffffff);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  .filter-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ion-text-color, #333333);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    ion-icon {
+      color: var(--ion-color-primary);
+    }
+  }
+}
+
+.custom-input-item {
+  --background: var(--ion-color-step-50, #f9f9f9);
+  --border-radius: 8px;
+  --border-width: 1px;
+  --border-color: var(--ion-color-step-200, #e0e0e0);
+  margin-bottom: 8px;
+
+  ion-icon {
+    margin-top: 12px;
+  }
+}
+
+.list-container {
+  padding: 0 4px;
+
+  .section-subtitle {
+    font-size: 0.8rem;
+    color: var(--ion-color-step-600, #666666);
+    margin: 8px 4px 12px 4px;
+  }
+}
+
+.custom-list {
+  background: transparent;
+}
+
+.doctor-item {
+  --background: var(--ion-card-background, #ffffff);
+  --border-radius: 12px;
+  --padding-start: 12px;
+  --inner-padding-end: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  .doctor-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--ion-color-step-100, #eef2f5);
+    color: var(--ion-color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .doctor-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ion-text-color, #1e1e1e);
+  }
+
+  .doctor-spec {
+    font-size: 0.85rem;
+    color: var(--ion-color-primary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+  }
+
+  .doctor-location {
+    font-size: 0.78rem;
+    color: var(--ion-color-step-600, #777777);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+  }
+
+  .custom-badge {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+  }
+}
+
+.modal-doctor-card {
+  border-radius: 12px;
+  margin: 0;
+  box-shadow: none;
+  background: var(--ion-card-background, #ffffff);
+  border: 1px solid var(--ion-color-step-200, #e2e8f0);
+
+  ion-card-title {
+    font-size: 1.1rem;
+    color: var(--ion-color-primary);
+  }
+
+  p {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 6px 0;
+    font-size: 0.9rem;
+    color: var(--ion-text-color, #444444);
+
+    ion-icon {
+      color: var(--ion-color-primary);
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .custom-input-item {
+    --background: var(--ion-color-step-100, #1e1e1e);
+    --border-color: var(--ion-color-step-300, #333333);
+  }
+
+  .doctor-item {
+    .doctor-avatar {
+      background: var(--ion-color-step-200, #2a2a2a);
+    }
+  }
+
+  .metric-card {
+    .metric-content {
+      .metric-icon {
+        &.primary-bg {
+          background: #1a365d;
+        }
+        &.success-bg {
+          background: #1b4332;
+        }
+      }
+    }
+  }
+}
